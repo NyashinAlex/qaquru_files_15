@@ -1,6 +1,8 @@
 import com.codeborne.pdftest.PDF;
 import com.codeborne.xlstest.XLS;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVReader;
+import model.Product;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -25,7 +27,6 @@ public class FileTest {
         ZipInputStream is = new ZipInputStream(cl.getResourceAsStream("example.zip"));
         ZipEntry entry;
         while((entry = is.getNextEntry()) != null) {
-//            org.assertj.core.api.Assertions.assertThat(entry.getName()).isEqualTo(entry.getName());
             switch (entry.getName()) {
                 case "example_csv.csv":
                     try (InputStream inputStream = zf.getInputStream(entry);
@@ -55,5 +56,15 @@ public class FileTest {
                     break;
             }
         }
+    }
+    @Test
+    void jsonTest() throws Exception {
+        File file = new File("src/test/resources/product.json");
+        ObjectMapper objectMapper = new ObjectMapper();
+        Product product = objectMapper.readValue(file, Product.class);
+
+        assertThat(product.shopperEmail).isEqualTo("ivanov@example.com");
+        assertThat(product.shopperName).isEqualTo("Ваня Иванов");
+        assertThat(product.contents.get(0).productID).isEqualTo(34);
     }
 }

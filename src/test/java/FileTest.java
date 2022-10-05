@@ -33,7 +33,7 @@ public class FileTest {
         while((entry = is.getNextEntry()) != null) {
             org.assertj.core.api.Assertions.assertThat(entry.getName()).isEqualTo(entry.getName());
             try (InputStream inputStream = zf.getInputStream(entry)) {
-                // проверки
+                // проверки/
                 System.out.println("");
             }
         }
